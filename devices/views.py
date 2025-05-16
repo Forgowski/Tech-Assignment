@@ -54,7 +54,7 @@ def set_location(request, id):
 @api_view(["GET"])
 def get_map(request):
     try:
-        devices = Device.objects.all()
+        devices = Device.objects.filter(user_id__isnull=False)
     except Device.DoesNotExist:
         return Response(
             {"detail": "Devices not found."},
