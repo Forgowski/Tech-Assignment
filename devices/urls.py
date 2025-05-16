@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns =[
-    path('<id>/assign/', views.assign_the_user),
-    path('<id>/location/', views.set_location)
+    path('devices/<id>/assign/', views.assign_the_user),
+    path('devices/<id>/location/', views.set_location),
+    path('map/', views.get_map)
 ]
