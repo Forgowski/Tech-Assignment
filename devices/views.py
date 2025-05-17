@@ -1,6 +1,7 @@
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
+
 from .models import Device
 from .serializers import DeviceSerializer, DeviceSetLocationSerializer
 
@@ -55,12 +56,12 @@ def set_location(request, id):
 def get_map(request):
     try:
         devices = Device.objects.filter(user_id__isnull=False)
+        serializer = DeviceSerializer(devices, many=True)
+
+        return Response(serializer.data)
+
     except Device.DoesNotExist:
         return Response(
             {"detail": "Devices not found."},
             status=status.HTTP_404_NOT_FOUND
         )
-
-    serializer = DeviceSerializer(devices, many=True)
-
-    return Response(serializer.data)

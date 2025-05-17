@@ -10,12 +10,13 @@ from .serializers import UserGetLocationSerializer
 def get_location(request, id):
     try:
         device = Device.objects.get(id=id)
+
+        serializer = UserGetLocationSerializer(device)
+
+        return Response(serializer.data)
+
     except Device.DoesNotExist:
         return Response(
             {"detail": "Device not found."},
             status=status.HTTP_404_NOT_FOUND
         )
-
-    serializer = UserGetLocationSerializer(device)
-
-    return Response(serializer.data)
