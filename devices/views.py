@@ -46,9 +46,14 @@ def set_location(request, id):
             {"detail": "Device not found."}, status=status.HTTP_404_NOT_FOUND
         )
 
-    serializer = DeviceSetLocationSerializer(
-        instance=device, data=request.data, partial=True
-    )
+    if not device.user_id:
+        return Response(
+            {"detail": "Device is not assigned to any user."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    serializer = DeviceSetLocationSerializer(instance=device, data=request.data)
+
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
@@ -60,28 +65,37 @@ def set_location(request, id):
 def get_map(request):
     try:
         devices = Device.objects.filter(user_id__isnull=False)
-        serializer = DeviceSerializer(devices, many=True)
+        if not devices:
+            return Response(
+                {"detail": "No assigned devices found."},
+                status=status.HTTP_204_NO_CONTENT,
+            )
 
+        serializer = DeviceSerializer(devices, many=True)
         return Response(serializer.data)
 
-    except Device.DoesNotExist:
+    except Exception as e:
         return Response(
-            {"detail": "Devices not found."}, status=status.HTTP_404_NOT_FOUND
+            {"detail": f"Unexpected error occurred: {str(e)}"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(["GET"])
 def get_devices(request):
     try:
         devices = Device.objects.all()
+        if not devices:
+            return Response(
+                {"detail": "No devices found."}, status=status.HTTP_204_NO_CONTENT
+            )
+
         serializer = DeviceSerializer(devices, many=True)
 
         return Response(serializer.data)
 
-    except Device.DoesNotExist:
+    except Exception as e:
         return Response(
-            {"detail": "Devices not found."}, status=status.HTTP_404_NOT_FOUND
+            {"detail": f"Unexpected error occurred: {str(e)}"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
-
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
