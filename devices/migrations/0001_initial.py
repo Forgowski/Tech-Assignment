@@ -14,17 +14,42 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Device',
+            name="Device",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('is_active', models.BooleanField(default=False)),
-                ('latitude', models.DecimalField(blank=True, decimal_places=16, max_digits=22, null=True)),
-                ('longitude', models.DecimalField(blank=True, decimal_places=16, max_digits=22, null=True)),
-                ('ping_time', models.IntegerField(default=0)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('timestamp', models.DateTimeField(auto_now=True)),
-                ('user_id', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
-                                              to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("is_active", models.BooleanField(default=False)),
+                (
+                    "latitude",
+                    models.DecimalField(
+                        blank=True, decimal_places=16, max_digits=22, null=True
+                    ),
+                ),
+                (
+                    "longitude",
+                    models.DecimalField(
+                        blank=True, decimal_places=16, max_digits=22, null=True
+                    ),
+                ),
+                ("ping_time", models.IntegerField(default=0)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("timestamp", models.DateTimeField(auto_now=True)),
+                (
+                    "user_id",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]
