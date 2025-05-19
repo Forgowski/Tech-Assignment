@@ -7,4 +7,5 @@ urlpatterns = [
     path("devices/<id>/location/", views.set_location),
     path("map/", views.get_map),
     path("devices/", views.get_devices),
+    path("devices/<id>/unassign/", views.unassign),
 ]

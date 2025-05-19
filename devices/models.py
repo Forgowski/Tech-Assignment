@@ -3,7 +3,7 @@ from django.db import models
 
 
 class Device(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     is_active = models.BooleanField(default=False)
     latitude = models.DecimalField(
         max_digits=22, decimal_places=16, null=True, blank=True
@@ -16,7 +16,7 @@ class Device(models.Model):
     timestamp = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Device {self.id} (user: {f'{self.user_id.username}, id: {self.user_id.id}' if self.user_id else 'none'})"
+        return f"Device {self.id} (user: {f'{self.user.username}, id: {self.user.id}' if self.user else 'none'})"
 
     @staticmethod
     def is_any_assigned_and_active(user_id):
